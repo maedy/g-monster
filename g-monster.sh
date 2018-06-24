@@ -39,7 +39,11 @@ get_bag () {
 
 search_favorite_bag () {
 
-	RESULT=`grep -e 'bag[0-9][0-9]*' ${TMP_FILE}_bag | grep -v disabled | grep -v aqua | sed -e 's/^..*bag\([0-9][0-9]*\)"..*$/\1/' | grep -v 12`
+	RESULT=`grep -e 'bag[0-9][0-9]*' ${TMP_FILE}_bag | grep -v '^ <' | grep -v disabled | grep -v aqua | sed -e 's/^..*bag\([0-9][0-9]*\)"..*$/\1/'`
+
+	if [ -z ${RESULT} ]; then
+		return
+	fi
 
 	for I in ${FAVORITE_BAGS}
 	do
@@ -52,7 +56,8 @@ search_favorite_bag () {
 			fi
 		done	
 	done
-	exit 0
+
+	return;
 }
 
 reserve_bag () {
@@ -63,13 +68,19 @@ reserve_bag () {
 	"${BASE}/reserve/confirm?lesson_id=${LESSON}&studio_code=${STUDIO}&punchbag=${1}" | grep one_time_token | sed -e 's/..*value="\([^"][^"]*\)..*$/\1/'`
 
 	echo ONE_TIME_TOKEN $ONE_TIME_TOKEN
-	curl -s -X POST -H ${UA} \
+	TRI=`curl -s -X POST -H ${UA} \
 	-H "Cookie:auth_token_web=${TOKEN}" \
 	-H "X-Requested-With: XMLHttpRequest" \
 	--data "onetime_token=${ONE_TIME_TOKEN}&no_and_members=%5B%7B%22no%22%3A%22${1}%22%7D%5D&pay_in_cash=&use_ticket=" \
-	"${BASE}/api/reservation/${LESSON}/reserve"
+	"${BASE}/api/reservation/${LESSON}/reserve" | jq -r .data`
 
-	RESERVED="TRUE"
+	if [ "$TRY" = "null" ]; then
+		RESERVED=""
+	else
+		RESERVED="TRUE"
+	fi
+
+	return;
 }
 
 login ${MAIL} ${PASSWORD}
@@ -80,16 +91,20 @@ do
 	search_favorite_bag
 
 	if [ -z $BAG ]; then
-		sleep 10
+		echo sleeping 5 seconds
+		sleep 5
 		continue;
 	else
-		reserve_bag ${BAG}
+		if [ "$RESERVED" = "TRUE" ]; then
+			return;
+		else
+			reserve_bag ${BAG}
+		fi
 	fi
-
 done
 
 rm -f ${TMP_FILE}*
 
-exit
+exit 0
 
 
