@@ -39,16 +39,16 @@ get_bag () {
 
 search_favorite_bag () {
 
-	RESULT=`grep -e 'bag[0-9][0-9]*' ${TMP_FILE}_bag | grep -v '^ <' | grep -v disabled | grep -v aqua | sed -e 's/^..*bag\([0-9][0-9]*\)"..*$/\1/'`
+	RESULT=`grep -e 'bag[0-9][0-9]*' ${TMP_FILE}_bag | grep -v '^ <' | grep -v disabled | grep -v ${NG_BAG} | sed -e 's/^..*bag\([0-9][0-9]*\)"..*$/\1/'`
 
 	if [ -z ${RESULT} ]; then
-		return
+		return;
 	fi
 
-	for I in ${FAVORITE_BAGS}
+	for I in ${RESULT}
 	do
 		BAG=$I
-		for J in ${RESULT}
+		for J in ${FAVORITE_BAGS}
 		do
 			if [ "$J" = "$BAG" ]; then
 				reserve_bag ${J}
@@ -61,14 +61,14 @@ search_favorite_bag () {
 }
 
 reserve_bag () {
-	echo reserve
-	echo $1
+	# echo reserve
+	# echo $1
 	ONE_TIME_TOKEN=`curl -s -X GET -H ${UA} \
 	-H "Cookie:auth_token_web=${TOKEN}" \
 	"${BASE}/reserve/confirm?lesson_id=${LESSON}&studio_code=${STUDIO}&punchbag=${1}" | grep one_time_token | sed -e 's/..*value="\([^"][^"]*\)..*$/\1/'`
 
-	echo ONE_TIME_TOKEN $ONE_TIME_TOKEN
-	TRI=`curl -s -X POST -H ${UA} \
+	# echo ONE_TIME_TOKEN $ONE_TIME_TOKEN
+	TRY=`curl -s -X POST -H ${UA} \
 	-H "Cookie:auth_token_web=${TOKEN}" \
 	-H "X-Requested-With: XMLHttpRequest" \
 	--data "onetime_token=${ONE_TIME_TOKEN}&no_and_members=%5B%7B%22no%22%3A%22${1}%22%7D%5D&pay_in_cash=&use_ticket=" \
@@ -77,6 +77,7 @@ reserve_bag () {
 	if [ "$TRY" = "null" ]; then
 		RESERVED=""
 	else
+		echo RESERVED!
 		RESERVED="TRUE"
 	fi
 
@@ -84,6 +85,8 @@ reserve_bag () {
 }
 
 login ${MAIL} ${PASSWORD}
+
+# echo $TOKEN
 
 while [ -z $RESERVED ]
 do
@@ -96,7 +99,7 @@ do
 		continue;
 	else
 		if [ "$RESERVED" = "TRUE" ]; then
-			return;
+			break;
 		else
 			reserve_bag ${BAG}
 		fi
