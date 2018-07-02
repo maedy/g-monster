@@ -9,6 +9,8 @@ STUDIO=
 NG_BAG=
 FAVORITE_BAGS=
 
+END=`date -d "$1" '+%s'`
+
 TMP_FILE=$$
 
 export TOKEN=""
@@ -90,6 +92,12 @@ login ${MAIL} ${PASSWORD}
 
 while [ -z $RESERVED ]
 do
+	NOW=`date '+%s'`
+
+	if [ `expr ${END} \- ${NOW}` -lt 0 ]; then
+		break;
+	fi
+
 	get_bag
 	search_favorite_bag
 
