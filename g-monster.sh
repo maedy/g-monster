@@ -1,13 +1,13 @@
 #!/bin/sh
 
 UA="User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
-MAIL=
-PASSWORD=
-BASE=
-LESSON=
-STUDIO=
-NG_BAG=
-FAVORITE_BAGS=
+MAIL=""
+PASSWORD=""
+BASE=""
+LESSON="$2"
+STUDIO="$1"
+NG_BAG=""
+FAVORITE_BAGS=""
 
 END=`date -d "$1" '+%s'`
 
@@ -94,7 +94,8 @@ while [ -z $RESERVED ]
 do
 	NOW=`date '+%s'`
 
-	if [ `expr ${END} \- ${NOW}` -lt 0 ]; then
+	if [ `expr ${END} \- ${NOW}` -gt 0 ]; then
+		echo "TIME UP..."
 		break;
 	fi
 
@@ -114,7 +115,9 @@ do
 	fi
 done
 
-rm -f ${TMP_FILE}*
+rm -f ${TMP_FILE}
+rm -f ${TMP_FILE}_bag
+rm -f ${TMP_FILE}_login
 
 exit 0
 

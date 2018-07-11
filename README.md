@@ -7,8 +7,8 @@ g-monster is a shell script to get a reservation of a training to be a monster.
 
 _"Wer mit Ungeheuern kämpft, mag zusehn, dass er nicht dabei zum Ungeheuer wird. Und wenn du lange in einen Abgrund blickst, blickt der Abgrund auch in dich hinein."_
 
-Actually, it's not easy, needs trainings, and the training requires a resevation.
-This script ease to get the resevation for the training.
+Actually, it's not easy, needs trainings, and the training requires a reservation.
+This script ease to get the reservation for the training.
 
 ## Requirement
 
@@ -27,18 +27,14 @@ Password for the site:
 	PASSWORD=
 The URI of the site:
 	BASE=
-The number of the lesson, you can see at the URI of the lesson:
-	LESSON=
-The number of the studio, also you can see at the URI:
-	STUDIO=
 A kind of Sand bag you don't like, such as aqua:
 	NG_BAG=
-Favirote Sand bags can be described, such as "15 16 17 18", these are searched at the first:
+Favorite Sand bags can be described, such as "15 16 17 18", these are searched at the first:
 	FAVORITE_BAGS=
 
-After setting the above variables, you can run this script with the end of date time to run:
+You can run this script with parameters. The first one is the studio, the second one is the lesson, and the other one is date time when this script stops running like this:
 
-	$ sh g-monster.sh "7/3 20:20"
+	$ sh g-monster.sh 1234 5678 "7/3 20:20"
 	sleeping 5 seconds
 	sleeping 5 seconds
 	sleeping 5 seconds
@@ -49,11 +45,11 @@ After setting the above variables, you can run this script with the end of date 
 	...
 	RESERVED!
 
-In the lucky case, you can get a resevation.
+In the lucky case, you can get a reservation.
 
 ## Attention
 Do not abuse this script so that the site can normally operate.
-And the specification of the site might change some day, and there's no guarantiee.
+And the specification of the site might change some day, that means it's not strange that one day this script gets not to work.
 
 A little more, almost there, you can do it, GANBATTE!
 
@@ -62,4 +58,3 @@ A little more, almost there, you can do it, GANBATTE!
 
 ## Author
 [Ryo](https://github.com/maedy)
-
