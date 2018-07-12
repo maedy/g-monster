@@ -22,14 +22,22 @@ This will work with the following tools in Linux, BSD, Mac OS X.
 Set the following variables in the script as you want:
 
 MAIL is for login to the site and @ needs to be URI encoded like %40:
+
 	MAIL=
 Password for the site:
+
 	PASSWORD=
+
 The URI of the site:
+
 	BASE=
+
 A kind of Sand bag you don't like, such as aqua:
+
 	NG_BAG=
+
 Favorite Sand bags can be described, such as "15 16 17 18", these are searched at the first:
+
 	FAVORITE_BAGS=
 
 You can run this script with parameters. The first one is the studio, the second one is the lesson, and the other one is date time when this script stops running like this:
