@@ -59,7 +59,7 @@ In the lucky case, you can get a reservation.
 Do not abuse this script so that the site can normally operate.
 And the specification of the site might change some day, that means it's not strange that one day this script gets not to work.
 
-A little more, almost there, you can do it, GANBATTE!
+A little more, almost there, you can do it, GAMBATTE!
 
 ## Licence
 [GPL](http://www.gnu.org/licenses/)
